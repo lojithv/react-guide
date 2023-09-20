@@ -1,38 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [data, setData] = useState([] as any[]);
+ // Define a state variable named "count" and initialize it to 0
+ const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    // Define a function to fetch data from an API
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+ // Define a state variable named "isActive" and initialize it to true
+ const [isActive, setIsActive] = useState(true);
 
-    // Call the fetch function
-    fetchData();
-  }, []); // The empty dependency array means this effect runs once after the component mounts
+ // Effect to update document title when count changes
+ useEffect(() => {
+   document.title = `Count: ${count}`;
+ }, [count]); // Runs whenever "count" changes
 
-  return (
-    <div>
-      <h1>Data from API:</h1>
-      {data ? (
-        <ul>
-          {data.map(item => (
-            <li key={item.id}>{item.title}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
-  );
+ return (
+   <div>
+     <h1>Count: {count}</h1>
+     <button onClick={() => setCount(count + 1)} style={{marginRight:'10px'}}>Increment</button>
+     <button onClick={() => setIsActive(!isActive)}>
+       {isActive ? 'Deactivate' : 'Activate'}
+     </button>
+   </div>
+ );
 }
 
 export default App;
