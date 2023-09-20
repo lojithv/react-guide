@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from "react";
 
 // Step 1: Create a Context
 const AppContext = createContext({} as any);
 
 // Step 2: Create a Provider
-function AppProvider({ children }:any) {
+function AppProvider({ children }: any) {
   const [count, setCount] = useState(0);
 
   return (
@@ -18,7 +18,7 @@ function AppProvider({ children }:any) {
 function useAppContext() {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error('useAppContext must be used within an AppProvider');
+    throw new Error("useAppContext must be used within an AppProvider");
   }
   return context;
 }
@@ -38,9 +38,14 @@ function Counter() {
 // Using the AppProvider to wrap the component tree
 function App() {
   return (
-    <AppProvider>
+    <div>
+      <div>Counter without errors</div>
+      <AppProvider>
+        <Counter />
+      </AppProvider>
+      <div style={{marginTop:'80px'}}>Counter with errors</div>
       <Counter />
-    </AppProvider>
+    </div>
   );
 }
 
