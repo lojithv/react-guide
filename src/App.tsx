@@ -49,11 +49,30 @@ function UserComponent() {
   );
 }
 
+// Additional Component using the Context
+function UserInfo() {
+  const { user } = useAppContext();
+
+  return (
+    <div>
+      {user ? (
+        <div>
+          <p>User Information:</p>
+          <p>Name: {user.name}</p>
+        </div>
+      ) : (
+        <p>Please log in</p>
+      )}
+    </div>
+  );
+}
+
 // Using the AppProvider to wrap the component tree
 function App() {
   return (
     <AppProvider>
       <UserComponent />
+      <UserInfo />
     </AppProvider>
   );
 }
