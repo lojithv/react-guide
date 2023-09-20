@@ -1,34 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-function App() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+// Step 1: Create a Context
+const AppContext = createContext({} as any);
 
-  const handleSubmit = (e:any) => {
-    e.preventDefault();
-    alert(`Submitted: ${firstName} ${lastName}`);
+// Step 2: Create a Provider
+function AppProvider({ children }:any) {
+  const [user, setUser] = useState(null);
+
+  return (
+    <AppContext.Provider value={{ user, setUser }}>
+      {children}
+    </AppContext.Provider>
+  );
+}
+
+// Step 3: Create a Custom Hook to use the Context
+function useAppContext() {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('useAppContext must be used within an AppProvider');
+  }
+  return context;
+}
+
+// Component using the Context
+function UserComponent() {
+  const { user, setUser } = useAppContext();
+
+  const handleLogin = () => {
+    setUser({ name: 'John Doe' });
+  };
+
+  const handleLogout = () => {
+    setUser(null);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>First Name:</label>
-        <input 
-          type="text" 
-          value={firstName} 
-          onChange={(e) => setFirstName(e.target.value)} 
-        />
-      </div>
-      <div>
-        <label>Last Name:</label>
-        <input 
-          type="text" 
-          value={lastName} 
-          onChange={(e) => setLastName(e.target.value)} 
-        />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      {user ? (
+        <div>
+          <p>Welcome, {user.name}!</p>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      ) : (
+        <button onClick={handleLogin}>Login</button>
+      )}
+    </div>
+  );
+}
+
+// Using the AppProvider to wrap the component tree
+function App() {
+  return (
+    <AppProvider>
+      <UserComponent />
+    </AppProvider>
   );
 }
 
