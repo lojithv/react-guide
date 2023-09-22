@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div>
-      <h1>Timer: {count}</h1>
+      <h1>Timer : {count}</h1>
     </div>
   );
 }
